@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OTM-JSON Viewer</title>
+    <link rel="stylesheet" href="./index.css">
+    <script src="../node_modules/knockout/build/output/knockout-latest.js"></script>
+    <script src="../dist/otm-viewer.js"></script>
+    <script src="../dist/index.js"></script>
+</head>
+<body>
+    <div id="main">
+        <div class="search-border inline-block">
+            <div class="margin-v10 margin-h10">
+                <input type="file" id="input-files" multiple>
+            </div>
+            <div class="margin-v10 margin-h10">
+                <span>検索語</span>
+                <input type="text" data-bind="value: searchWord">
+                <select data-bind="value: searchType">
+                    <option value="word">単語検索</option>
+                    <option value="translation">訳語検索</option>
+                    <option value="all">全文検索</option>
+                </select>
+                <select data-bind="value: matchType">
+                    <option value="forward">前方一致</option>
+                    <option value="backward">後方一致</option>
+                    <option value="partial">部分一致</option>
+                </select>
+                <button data-bind="click: search">検索</button>
+            </div>
+        </div>
+        <div>
+            <span>件数：</span><span data-bind="text: count"></span>
+        </div>
+        <div class="wrap-y">
+            <!-- ko foreach: results -->
+            <div class="word-border" data-bind="visible: true" style="display: none;">
+                <div class="flex title">
+                    <span class="fit" data-bind="with: word">
+                        <span class="text" data-bind="text: entry.form"></span>
+                        <!-- ko foreach: tags -->
+                        <span class="tag" data-bind="text: $data"></span>
+                        <!-- /ko -->
+                    </span>
+                    <span class="static" data-bind="text: name"></span>
+                </div>
+                <div class="flex" data-bind="with: word">
+                    <div class="half" data-bind="foreach: translations">
+                        <div class="translation-border flex" data-bind="with: $data">
+                            <span class="title static" data-bind="text: title"></span>
+                            <span class="text fit break-word" data-bind="text: OtmViewer.join(forms)"></span>
+                        </div>
+                    </div>
+                    <div class="half" data-bind="foreach: contents">
+                        <div class="content-border flex" data-bind="with: $data">
+                            <span class="title static" data-bind="text: title"></span>
+                            <div class="text fit" data-bind="foreach: OtmViewer.split(text)">
+                                <div data-bind="text: $data"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</body>
+</html>
