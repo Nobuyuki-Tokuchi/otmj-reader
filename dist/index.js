@@ -1,8 +1,7 @@
 "use strict";
-let viewer;
 window.addEventListener("load", () => {
     const inputFiles = document.getElementById("input-files");
-    viewer = new OtmViewer();
+    const viewer = new OtmViewer();
     inputFiles.addEventListener("change", (event) => {
         let files = null;
         if (!(event.target instanceof HTMLInputElement)) {

@@ -12,7 +12,7 @@
 </head>
 <body>
     <div id="main">
-        <div class="search-border inline-block">
+        <div class="search-border">
             <div class="margin-v10 margin-h10">
                 <input type="file" id="input-files" multiple>
             </div>
@@ -35,10 +35,10 @@
         <div>
             <span>件数：</span><span data-bind="text: count"></span>
         </div>
-        <div class="wrap-y">
+        <div class="word-list">
             <!-- ko foreach: results -->
             <div class="word-border" data-bind="visible: true" style="display: none;">
-                <div class="flex title">
+                <div class="flex word-title">
                     <span class="fit" data-bind="with: word">
                         <span class="text" data-bind="text: entry.form"></span>
                         <!-- ko foreach: tags -->
@@ -48,18 +48,43 @@
                     <span class="static" data-bind="text: name"></span>
                 </div>
                 <div class="flex" data-bind="with: word">
-                    <div class="half" data-bind="foreach: translations">
-                        <div class="translation-border flex" data-bind="with: $data">
-                            <span class="title static" data-bind="text: title"></span>
-                            <span class="text fit break-word" data-bind="text: OtmViewer.join(forms)"></span>
+                    <div class="half">
+                        <div data-bind="if: translations.length > 0">
+                            <div class="translation-top">
+                                訳語
+                            </div>
+                            <!-- ko foreach: translations -->
+                            <div class="translation-border flex" data-bind="with: $data">
+                                <span class="translation-title static" data-bind="text: title"></span>
+                                <span class="translation-text fit" data-bind="text: OtmViewer.join(forms)"></span>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                        <div data-bind="if: variations.length > 0">
+                            <div class="variation-top">
+                                変化形
+                            </div>
+                            <!-- ko foreach: variations -->
+                            <div class="variation-border flex" data-bind="with: $data">
+                                <span class="variation-title static" data-bind="text: title"></span>
+                                <span class="variation-text fit" data-bind="text: form"></span>
+                            </div>
+                            <!-- /ko -->
                         </div>
                     </div>
-                    <div class="half" data-bind="foreach: contents">
-                        <div class="content-border flex" data-bind="with: $data">
-                            <span class="title static" data-bind="text: title"></span>
-                            <div class="text fit" data-bind="foreach: OtmViewer.split(text)">
-                                <div data-bind="text: $data"></div>
+                    <div class="half">
+                        <div data-bind="if: contents.length > 0">
+                            <div class="content-top">
+                                内容
                             </div>
+                            <!-- ko foreach: contents -->
+                            <div class="content-border flex" data-bind="with: $data">
+                                <span class="content-title static" data-bind="text: title"></span>
+                                <div class="content-text fit" data-bind="foreach: OtmViewer.split(text)">
+                                    <div data-bind="text: $data"></div>
+                                </div>
+                            </div>
+                            <!-- /ko -->
                         </div>
                     </div>
                 </div>

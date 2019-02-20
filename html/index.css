@@ -7,6 +7,7 @@ body {
     border-style: solid;
     border-width: 2px;
     border-radius: 5px;
+    display: inline-block;
 }
 
 .word-border {
@@ -19,17 +20,17 @@ body {
     margin-bottom: 3px;
 }
 
-.word-border > .title {
+.word-border > .word-title {
     background-color: lightblue;
     padding: 2px;
 }
 
-.word-border > .title .text {
+.word-border > .word-title .text {
     font-size: 1.5em;
     margin-right: 5px;
 }
 
-.word-border > .title .tag {
+.word-border > .word-title .tag {
     background-color: whitesmoke;
     padding: 2px 5px;
     margin-left: 2px;
@@ -38,7 +39,15 @@ body {
     font-size: 0.75em; 
 }
 
-.translation-border {
+.word-list {
+    min-height: 300px;
+    height: calc(100vh - 150px);
+    overflow-y: scroll;
+}
+
+.translation-border,
+.content-border,
+.variation-border {
     border-top-color: lightslategrey;
     border-left-color: lightslategrey;
     border-right-color: lightslategrey;
@@ -52,12 +61,16 @@ body {
     margin: 0;
 }
 
-.translation-border:last-child {
+.translation-border:last-child,
+.content-border:last-child,
+.variation-border:last-child {
     border-bottom-color: lightslategrey;
     border-bottom-width: 2px;
 }
 
-.translation-border > .title {
+.translation-border > .translation-title,
+.content-border > .content-title,
+.variation-border > .variation-title {
     background-color: lightgrey;
     padding-top: 2px;
     padding-bottom: 2px;
@@ -66,7 +79,9 @@ body {
     margin: 0;
 }
 
-.translation-border > .text {
+.translation-border > .translation-text,
+.content-border > .content-text,
+.variation-border > .variation-text {
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 5px;
@@ -75,42 +90,23 @@ body {
     border-left: 5px solid lightslategrey;
 }
 
-.content-border {
-    border-top-color: lightslategrey;
-    border-left-color: lightslategrey;
-    border-right-color: lightslategrey;
-    border-bottom: transparent;
-    border-top-width: 2px;
-    border-left-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 0;
-    border-style: solid;
-    padding: 0;
+.translation-top,
+.content-top,
+.variation-top {
     margin: 0;
-}
-
-.content-border:last-child {
-    border-bottom-color: lightslategrey;
-    border-bottom-width: 2px;
-}
-
-.content-border > .title {
-    background-color: lightgrey;
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 5px;
     padding-right: 5px;
-    margin: 0;
+    background-color: lightslategrey;
+    color: white;
 }
 
-.content-border > .text {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin: 0;
-    border-left: 5px solid lightslategrey;
+.variation-top {
+    margin-top: 5px;
 }
+
+/* 共通 */
 
 .margin-h10 {
     margin-left: 10px;
@@ -120,10 +116,6 @@ body {
 .margin-v10 {
     margin-top: 10px;
     margin-bottom: 10px;
-}
-
-.inline-block {
-    display: inline-block;
 }
 
 .flex {
@@ -153,10 +145,4 @@ body {
 
 .flex > .half:last-child {
     margin-right: 0; 
-}
-
-.wrap-y {
-    min-height: 300px;
-    height: calc(100vh - 150px);
-    overflow-y: scroll;
 }

@@ -1,7 +1,6 @@
-let viewer: OtmViewer;
 window.addEventListener("load", () => {
     const inputFiles = document.getElementById("input-files") as HTMLInputElement;
-    viewer = new OtmViewer();
+    const viewer = new OtmViewer();
 
     inputFiles.addEventListener("change", (event: Event) => {
         let files: FileList | null = null;
