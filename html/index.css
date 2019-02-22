@@ -2,12 +2,35 @@ body {
     font-size: 16px;
 }
 
-.search-border {
+.search-border,
+.list-border {
     border-color: black;
     border-style: solid;
     border-width: 2px;
     border-radius: 5px;
     display: inline-block;
+}
+
+.list-border {
+    margin-left: 20px;
+}
+
+.list-border > .listing {
+    max-height: 80px;
+    overflow-y: auto;
+}
+
+.list-border > .listing span {
+    display: inline-block;
+}
+
+.list-border > .listing span::after {
+    content: ",";
+    font-weight: bold;
+}
+
+.list-border > .listing span:last-child::after {
+    content: "";
 }
 
 .word-border {

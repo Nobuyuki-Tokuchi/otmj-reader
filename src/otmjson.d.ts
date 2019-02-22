@@ -8,7 +8,7 @@ interface OtmWord {
     translations: OtmTranslation[];
     tags: string[];
     contents: OtmContent[];
-    variations: any[];
+    variations: OtmVariation[];
     relations: OtmRelation[];
 }
 
@@ -30,4 +30,9 @@ interface OtmContent {
 interface OtmRelation {
     title: string;
     entry: OtmEntry;
+}
+
+interface OtmVariation {
+    title: string;
+    form: string;
 }

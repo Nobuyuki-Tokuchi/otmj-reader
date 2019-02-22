@@ -12,24 +12,26 @@
 </head>
 <body>
     <div id="main">
-        <div class="search-border">
-            <div class="margin-v10 margin-h10">
-                <input type="file" id="input-files" multiple>
+        <div class="flex">
+            <div class="search-border static">
+                <div class="margin-v10 margin-h10">
+                    <input type="file" id="input-files" multiple data-bind="event: { change: readFiles }">
+                </div>
+                <div class="margin-v10 margin-h10">
+                    <span>検索内容</span>
+                    <input type="text" data-bind="value: searchWord">
+                    <select data-bind="value: searchType, options: OtmViewer.SearchTypeList, optionsText: 'name', optionsValue: 'value'"></select>
+                    <select data-bind="value: matchType, options: OtmViewer.MatchTypeList, optionsText: 'name', optionsValue: 'value'"></select>
+                    <button data-bind="click: search">検索</button>
+                </div>
             </div>
-            <div class="margin-v10 margin-h10">
-                <span>検索語</span>
-                <input type="text" data-bind="value: searchWord">
-                <select data-bind="value: searchType">
-                    <option value="word">単語検索</option>
-                    <option value="translation">訳語検索</option>
-                    <option value="all">全文検索</option>
-                </select>
-                <select data-bind="value: matchType">
-                    <option value="forward">前方一致</option>
-                    <option value="backward">後方一致</option>
-                    <option value="partial">部分一致</option>
-                </select>
-                <button data-bind="click: search">検索</button>
+            <div class="list-border fit">
+                <div class="margin-v10 margin-h10">ファイル一覧</div>
+                <div class="margin-v10 margin-h10 listing">
+                    <div data-bind="foreach: readFileNames">
+                        <span data-bind="text: $data"></span>
+                    </div>
+                </div>
             </div>
         </div>
         <div>
