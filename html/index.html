@@ -14,19 +14,33 @@
     <div id="main">
         <div class="flex">
             <div class="search-border static">
-                <div class="margin-v10 margin-h10">
-                    <input type="file" id="input-files" multiple data-bind="event: { change: readFiles }">
+                <div class="tab-area" data-bind="click: tabClick">
+                    <span data-tab-value="1" data-bind="css: { selected: selected() === '1' }">簡易検索</span>
+                    <span data-tab-value="2" data-bind="css: { selected: selected() === '2' }">スクリプト検索</span>
                 </div>
                 <div class="margin-v10 margin-h10">
+                    <!-- ko if: selected() === '1' -->
                     <span>検索内容</span>
                     <input type="text" data-bind="value: searchWord">
                     <select data-bind="value: searchType, options: OtmViewer.SearchTypeList, optionsText: 'name', optionsValue: 'value'"></select>
                     <select data-bind="value: matchType, options: OtmViewer.MatchTypeList, optionsText: 'name', optionsValue: 'value'"></select>
                     <button data-bind="click: search">検索</button>
+                    <!-- /ko -->
+                    <!-- ko if: selected() === '2' -->
+                    <div>
+                        <span>検索方法</span><button data-bind="click: searchScript">検索</button>
+                    </div>
+                    <div>
+                        <textarea class="script-area" cols="60" rows="5" data-bind="value: scriptFunc"></textarea>
+                    </div>
+                    <!-- /ko -->
                 </div>
             </div>
             <div class="list-border fit">
-                <div class="margin-v10 margin-h10">ファイル一覧</div>
+                <div class="margin-v10 margin-h10">
+                    <span class="margin-v10">ファイル一覧</span>
+                    <input type="file" id="input-files" multiple data-bind="event: { change: readFiles }">
+                </div>
                 <div class="margin-v10 margin-h10 listing">
                     <div data-bind="foreach: readFileNames">
                         <span data-bind="text: $data"></span>
@@ -34,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="margin-v10">
             <span>件数：</span><span data-bind="text: count"></span>
         </div>
         <div class="word-list">

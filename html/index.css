@@ -2,6 +2,17 @@ body {
     font-size: 16px;
 }
 
+.tab-area {
+    border-bottom-color: black;
+    border-bottom-style: solid;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.tab-area > .selected {
+    font-weight: bold;
+}
+
 .search-border,
 .list-border {
     border-color: black;
@@ -64,8 +75,12 @@ body {
 
 .word-list {
     min-height: 300px;
-    height: calc(100vh - 150px);
+    height: calc(100vh - 240px);
     overflow-y: scroll;
+}
+
+.script-area {
+    font-family: monospace;
 }
 
 .translation-border,
