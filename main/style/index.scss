@@ -29,48 +29,52 @@ body {
 .list-border > .listing {
     max-height: 80px;
     overflow-y: auto;
-}
 
-.list-border > .listing span {
-    display: inline-block;
-}
+    span {
+        display: inline-block;
+    }
 
-.list-border > .listing span::after {
-    content: ",";
-    font-weight: bold;
-}
+    span::after {
+        content: ",";
+        font-weight: bold;
+    }
 
-.list-border > .listing span:last-child::after {
-    content: "";
+    span:last-child::after {
+        content: "";
+    }
 }
 
 .word-border {
+    $margin-v: 3px;
+    $border-top-radius: 5px;
+
     border-color: lightblue;
     border-width: 2px;
     border-style: solid;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    margin-top: 3px;
-    margin-bottom: 3px;
+    border-top-left-radius: $border-top-radius;
+    border-top-right-radius: $border-top-radius;
+    margin-top: $margin-v;
+    margin-bottom: $margin-v;
 }
 
 .word-border > .word-title {
+    $margin-v: 2px;
+
     background-color: lightblue;
     padding: 2px;
-}
 
-.word-border > .word-title .text {
-    font-size: 1.5em;
-    margin-right: 5px;
-}
-
-.word-border > .word-title .tag {
-    background-color: whitesmoke;
-    padding: 2px 5px;
-    margin-left: 2px;
-    margin-right: 2px;
-    border-radius: 2px;
-    font-size: 0.75em; 
+    .text {
+        font-size: 1.5em;
+        margin-right: 5px;
+    }
+    .tag {
+        background-color: whitesmoke;
+        padding: 2px 5px;
+        margin-left: $margin-v;
+        margin-right: $margin-v;
+        border-radius: 2px;
+        font-size: 0.75em;
+    }
 }
 
 .word-list {

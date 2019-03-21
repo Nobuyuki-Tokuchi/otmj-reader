@@ -1,0 +1,186 @@
+@charset "UTF-8";
+body {
+  font-size: 16px;
+}
+
+.tab-area {
+  border-bottom-color: black;
+  border-bottom-style: solid;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.tab-area > .selected {
+  font-weight: bold;
+}
+
+.search-border,
+.list-border {
+  border-color: black;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.list-border {
+  margin-left: 20px;
+}
+
+.list-border > .listing {
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+.list-border > .listing span {
+  display: inline-block;
+}
+
+.list-border > .listing span::after {
+  content: ",";
+  font-weight: bold;
+}
+
+.list-border > .listing span:last-child::after {
+  content: "";
+}
+
+.word-border {
+  border-color: lightblue;
+  border-width: 2px;
+  border-style: solid;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.word-border > .word-title {
+  background-color: lightblue;
+  padding: 2px;
+}
+
+.word-border > .word-title .text {
+  font-size: 1.5em;
+  margin-right: 5px;
+}
+
+.word-border > .word-title .tag {
+  background-color: whitesmoke;
+  padding: 2px 5px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 2px;
+  font-size: 0.75em;
+}
+
+.word-list {
+  min-height: 300px;
+  height: calc(100vh - 240px);
+  overflow-y: scroll;
+}
+
+.script-area {
+  font-family: monospace;
+}
+
+.translation-border,
+.content-border,
+.variation-border {
+  border-top-color: lightslategrey;
+  border-left-color: lightslategrey;
+  border-right-color: lightslategrey;
+  border-bottom: transparent;
+  border-top-width: 2px;
+  border-left-width: 2px;
+  border-right-width: 2px;
+  border-bottom-width: 0;
+  border-style: solid;
+  padding: 0;
+  margin: 0;
+}
+
+.translation-border:last-child,
+.content-border:last-child,
+.variation-border:last-child {
+  border-bottom-color: lightslategrey;
+  border-bottom-width: 2px;
+}
+
+.translation-border > .translation-title,
+.content-border > .content-title,
+.variation-border > .variation-title {
+  background-color: lightgrey;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 0;
+}
+
+.translation-border > .translation-text,
+.content-border > .content-text,
+.variation-border > .variation-text {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 0;
+  border-left: 5px solid lightslategrey;
+}
+
+.translation-top,
+.content-top,
+.variation-top {
+  margin: 0;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: lightslategrey;
+  color: white;
+}
+
+.variation-top {
+  margin-top: 5px;
+}
+
+/* 共通 */
+.margin-h10 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.margin-v10 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex > .fit {
+  flex-grow: 1;
+  flex-shrink: 0;
+  width: 1em;
+}
+
+.flex > .static {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.flex > .half {
+  flex-basis: 50%;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.flex > .half:first-child {
+  margin-left: 0;
+}
+
+.flex > .half:last-child {
+  margin-right: 0;
+}
