@@ -15,8 +15,8 @@
         <div class="flex">
             <div class="search-border static">
                 <div class="tab-area" data-bind="click: tabClick">
-                    <span data-tab-value="1" data-bind="css: { selected: selected() === '1' }">簡易検索</span>
-                    <span data-tab-value="2" data-bind="css: { selected: selected() === '2' }">スクリプト検索</span>
+                    <span class="pointer" data-tab-value="1" data-bind="css: { selected: selected() === '1' }">簡易検索</span>
+                    <span class="pointer" data-tab-value="2" data-bind="css: { selected: selected() === '2' }">スクリプト検索</span>
                 </div>
                 <div class="margin-v10 margin-h10">
                     <!-- ko if: selected() === '1' -->
