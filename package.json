@@ -1,7 +1,7 @@
 {
-  "name": "otmj-reader",
+  "name": "otmj-editor",
   "version": "1.0.0",
-  "description": "OTM-JSON形式の辞書内の単語や訳語を検索するためのWebアプリケーション",
+  "description": "OTM-JSON形式の辞書内の単語や訳語を検索・登録をするためのWebアプリケーション",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
@@ -12,6 +12,6 @@
   "devDependencies": {
     "@types/knockout": "^3.4.66",
     "knockout": "^3.5.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.6.2"
   }
 }

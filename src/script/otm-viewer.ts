@@ -1,36 +1,58 @@
+
 interface ViewResult {
     name: string;
     word: OtmWord;
 }
 
+interface LoadedDictionary {
+    name: string;
+    isTarget: KnockoutObservable<boolean>;
+}
+
+type SearchFunction = (word: OtmWord) => boolean;
+
 class OtmViewer {
-    private otmlist: OtmJson[];
-    public results: KnockoutObservableArray<ViewResult>;
-    public searchWord: KnockoutObservable<string>;
-    public searchType: KnockoutObservable<string>;
-    public matchType: KnockoutObservable<string>;
-    public count: KnockoutComputed<number>;
-    public readFileNames: KnockoutObservableArray<string>;
-    public selected: KnockoutObservable<string>;
-    public scriptFunc: KnockoutObservable<string>;
+    otmlist: KnockoutObservableArray<OtmJson>;
+    results: KnockoutObservableArray<ViewResult>;
+    searchWord: KnockoutObservable<string>;
+    searchType: KnockoutObservable<string>;
+    matchType: KnockoutObservable<string>;
+    count: KnockoutComputed<number>;
+    readFileInfoList: KnockoutObservableArray<LoadedDictionary>;
+    selected: KnockoutObservable<string>;
+    scriptFunc: KnockoutObservable<string>;
+    otmSearchScript: KnockoutObservable<string>;
 
     constructor() {
-        this.otmlist = [];
-
+        this.otmlist = ko.observableArray([]);
         this.results = ko.observableArray([]);
         this.searchWord = ko.observable("");
         this.searchType = ko.observable(OtmViewer.SearchType.WORD);
         this.matchType = ko.observable(OtmViewer.MatchType.FORWARD);
         this.count = ko.pureComputed(() => this.results().length);
-        this.readFileNames = ko.observableArray([]);
+        this.readFileInfoList = ko.observableArray([]);
         this.selected = ko.observable("1");
         this.scriptFunc = ko.observable("");
+        this.otmSearchScript = ko.observable("");
+
+        ko.computed(() => {
+            this.readFileInfoList(this.otmlist().map(x => {
+                return {
+                    name: x.dictionaryName!,
+                    isTarget: ko.observable(true),
+                };
+            }));    
+        })
     }
 
     public tabClick(_data: any, event: Event) {
         const target = event.target as (HTMLElement | null);
         if(target === null) {
             throw new TypeError("event target is nothing");
+        }
+
+        if(!(target instanceof HTMLButtonElement)) {
+            return ;
         }
 
         const valueAttr = target.attributes.getNamedItem("data-tab-value");
@@ -41,35 +63,6 @@ class OtmViewer {
         this.selected(valueAttr.value);
     }
     
-    public readFiles = (_: any, event: Event) => {
-        let files: FileList | null = null;
-        if(!(event.target instanceof HTMLInputElement)) {
-            throw new TypeError("invalid elements");
-        }
-
-        files = event.target.files;
-
-        if(files === null) {
-            throw new ReferenceError("files is null");
-        }
-
-        this.otmlist.length = 0;
-        const array = Array.from(files);
-        this.readFileNames(array.map(x => x.name));
-
-        array.forEach((value) => {
-            const reader = new FileReader();
-            
-            reader.addEventListener("load", (event) => {
-                const otm = JSON.parse((event.target as FileReader).result as string) as OtmJson;
-                otm.dictionaryName = value.name;
-                this.otmlist.push(otm);
-            })
-
-            reader.readAsText(value);
-        });
-    };
-
     public search(): void {
         switch (this.searchType()) {
             case OtmViewer.SearchType.WORD:
@@ -96,10 +89,19 @@ class OtmViewer {
     }
 
     public searchScript(): void {
-        const data = this.scriptFunc();
-        if(typeof(data) === "string" && data !== "") {
-            const func = new Function("word", data);
-            this.results(this.getResult(func as (word: OtmWord) => boolean));
+        if(this.selected() === "2") {
+            const data = this.otmSearchScript();
+            if(typeof(data) === "string" && data !== "") {
+                const search = new OtmSearch(data);
+                this.results(this.getResult(search.compile() as SearchFunction));
+            }
+        }
+        else {
+            const data = this.scriptFunc();
+            if(typeof(data) === "string" && data !== "") {
+                const func = new Function("word", data);
+                this.results(this.getResult(func as SearchFunction));
+            }
         }
     }
 
@@ -255,17 +257,19 @@ class OtmViewer {
         return this.getResult(filterFunc);
     }
 
-    private getResult(filterFunc: (word: OtmWord) => boolean): ViewResult[] {
+    private getResult(filterFunc: SearchFunction): ViewResult[] {
         if(filterFunc === null) {
             return [];
         }
         else {
-            const result = this.otmlist.map((x) => x.words.filter(filterFunc as (word: OtmWord) => boolean).map((y) => {
-                return {
-                    name: x.dictionaryName,
-                    word: y,
-                } as ViewResult;
-            }));
+            const showDictionary = this.readFileInfoList().filter(x => x.isTarget()).map(x => x.name);
+            const result = this.otmlist().filter(x => showDictionary.indexOf(x.dictionaryName) !== -1)
+                .map((x) => x.words.filter(filterFunc).map((y) => {
+                    return {
+                        name: x.dictionaryName,
+                        word: y,
+                    } as ViewResult;
+                }));
 
             if(result.length !== 0) {
                 return result.reduce((acc, x) => acc.concat(x)).sort((x, y) => {
@@ -287,7 +291,6 @@ class OtmViewer {
     static split(array: string | KnockoutObservable<string>) {
         return ko.unwrap(array).split("\n");
     }
-
     static SearchType = {
         WORD: "word",
         TRANSLATION: "translation",

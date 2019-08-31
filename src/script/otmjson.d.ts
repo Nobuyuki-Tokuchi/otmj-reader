@@ -1,6 +1,6 @@
 interface OtmJson {
     words: OtmWord[];
-    dictionaryName?: string;
+    dictionaryName: string;
 }
 
 interface OtmWord {

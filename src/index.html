@@ -4,75 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>OTM-JSON Viewer</title>
+    <title>OTM-JSON Editor</title>
     <link rel="stylesheet" href="./style/index.css">
     <script src="../node_modules/knockout/build/output/knockout-latest.js"></script>
+    <script src="./script/ko.append.js"></script>
+    <script src="./script/otmsearch/otmsearch.token.js"></script>
+    <script src="./script/otmsearch/otmsearch.node.js"></script>
+    <script src="./script/otmsearch/otmsearch.js"></script>
     <script src="./script/otm-viewer.js"></script>
     <script src="./script/index.js"></script>
 </head>
 <body>
-    <div id="main">
-        <div class="flex">
-            <div class="search-border static">
-                <div class="tab-area" data-bind="click: tabClick">
-                    <span class="pointer" data-tab-value="1" data-bind="css: { selected: selected() === '1' }">簡易検索</span>
-                    <span class="pointer" data-tab-value="2" data-bind="css: { selected: selected() === '2' }">スクリプト検索</span>
+    <div id="main" style="display: none;" data-bind="visible: true">
+        <div class="fixed-panel p-h5">
+            <div class="tabs" data-bind="click: tabClick">
+                <button class="tab-btn" data-bind="selected: selected" data-tab-value="1">検索</button>
+                <button class="tab-btn" data-bind="selected: selected" data-tab-value="2">簡易スクリプト検索</button>
+                <button class="tab-btn" data-bind="selected: selected" data-tab-value="3">スクリプト検索</button>
+            </div>
+            <div class="flex setting-area">
+                <div class="panel half m-h0">
+                    <div class="search" data-bind="used: selected" data-tab-value="1">
+                        <div class="flex">
+                            <label class="static" for="search-word">検索文字列</label>
+                            <input class="stretch"type="text" id="search-word" data-bind="value: searchWord">
+                        </div>
+                        <div class="flex">
+                            <select class="grow" data-bind="options: OtmViewer.SearchTypeList, optionsText: 'name', optionsValue: 'value', value: searchType"></select>
+                            <select class="grow" data-bind="options: OtmViewer.MatchTypeList, optionsText: 'name', optionsValue: 'value', value: matchType"></select>
+                            <button class="btn" data-bind="click: search">検索</button>
+                        </div>
+                    </div>
+                    <div class="flex otmsearch m-0" data-bind="used: selected" data-tab-value="2">
+                        <textarea class="script-area grow" rows="4" data-bind="value: otmSearchScript"></textarea>
+                        <div class="static">
+                            <button class="btn" data-bind="click: searchScript">検索</button>
+                        </div>
+                    </div>
+                    <div class="flex script-search m-0" data-bind="used: selected" data-tab-value="3">
+                        <textarea class="script-area grow" rows="4" data-bind="value: scriptFunc"></textarea>
+                        <div class="static">
+                            <button class="btn" data-bind="click: searchScript">検索</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="margin-v10 margin-h10">
-                    <!-- ko if: selected() === '1' -->
-                    <span>検索内容</span>
-                    <input type="text" data-bind="value: searchWord">
-                    <select data-bind="value: searchType, options: OtmViewer.SearchTypeList, optionsText: 'name', optionsValue: 'value'"></select>
-                    <select data-bind="value: matchType, options: OtmViewer.MatchTypeList, optionsText: 'name', optionsValue: 'value'"></select>
-                    <button data-bind="click: search">検索</button>
-                    <!-- /ko -->
-                    <!-- ko if: selected() === '2' -->
-                    <div>
-                        <span>検索方法</span><button data-bind="click: searchScript">検索</button>
+                <div class="panel half flex m-h0 overflow-y-auto">
+                    <div class="half m-5">
+                        <input-file params="value: otmlist"></input-file>
                     </div>
-                    <div>
-                        <textarea class="script-area" cols="60" rows="5" data-bind="value: scriptFunc"></textarea>
+                    <div class="half flex flex-wrap m-5">
+                        <!-- ko foreach: readFileInfoList -->
+                        <div class="static m-h0">
+                            <input type="checkbox" data-bind="checked: isTarget">
+                            <span data-bind="text: name"></span>
+                        </div>
+                        <!-- /ko -->
                     </div>
-                    <!-- /ko -->
                 </div>
             </div>
-            <div class="list-border fit">
-                <div class="margin-v10 margin-h10">
-                    <span class="margin-v10">ファイル一覧</span>
-                    <input type="file" id="input-files" multiple data-bind="event: { change: readFiles }">
-                </div>
-                <div class="margin-v10 margin-h10 listing">
-                    <div data-bind="foreach: readFileNames">
-                        <span data-bind="text: $data"></span>
-                    </div>
-                </div>
+            <div class="m-5">
+                <span>件数：</span><span data-bind="text: count"></span>
             </div>
-        </div>
-        <div class="margin-v10">
-            <span>件数：</span><span data-bind="text: count"></span>
+            <hr class="m-h0">
         </div>
         <div class="word-list">
             <!-- ko foreach: results -->
             <div class="word-border" data-bind="visible: true" style="display: none;">
                 <div class="flex word-title">
-                    <span class="fit" data-bind="with: word">
-                        <span class="text" data-bind="text: entry.form"></span>
+                    <span class="grow" data-bind="with: word">
+                        <span class="text" data-bind="text: entry.form">単語</span>
                         <!-- ko foreach: tags -->
-                        <span class="tag" data-bind="text: $data"></span>
+                        <span class="tag" data-bind="text: $data">タグ</span>
                         <!-- /ko -->
                     </span>
-                    <span class="static" data-bind="text: name"></span>
+                    <span class="static" data-bind="text: name">辞書名</span>
                 </div>
                 <div class="flex" data-bind="with: word">
-                    <div class="half">
+                    <div class="half m-0">
                         <div data-bind="if: translations.length > 0">
                             <div class="translation-top">
                                 訳語
                             </div>
                             <!-- ko foreach: translations -->
                             <div class="translation-border flex" data-bind="with: $data">
-                                <span class="translation-title static" data-bind="text: title"></span>
-                                <span class="translation-text fit" data-bind="text: OtmViewer.join(forms)"></span>
+                                <span class="title static" data-bind="text: title">タイトル</span>
+                                <span class="text grow" data-bind="text: OtmViewer.join(forms)">訳語</span>
                             </div>
                             <!-- /ko -->
                         </div>
@@ -82,22 +98,22 @@
                             </div>
                             <!-- ko foreach: variations -->
                             <div class="variation-border flex" data-bind="with: $data">
-                                <span class="variation-title static" data-bind="text: title"></span>
-                                <span class="variation-text fit" data-bind="text: form"></span>
+                                <span class="title static" data-bind="text: title">タイトル</span>
+                                <span class="text grow" data-bind="text: form">内容</span>
                             </div>
                             <!-- /ko -->
                         </div>
                     </div>
-                    <div class="half">
+                    <div class="half m-0">
                         <div data-bind="if: contents.length > 0">
                             <div class="content-top">
                                 内容
                             </div>
                             <!-- ko foreach: contents -->
                             <div class="content-border flex" data-bind="with: $data">
-                                <span class="content-title static" data-bind="text: title"></span>
-                                <div class="content-text fit" data-bind="foreach: OtmViewer.split(text)">
-                                    <div data-bind="text: $data"></div>
+                                <span class="title static" data-bind="text: title">タイトル</span>
+                                <div class="text grow" data-bind="foreach: OtmViewer.split(text)">
+                                    <div data-bind="text: $data">内容</div>
                                 </div>
                             </div>
                             <!-- /ko -->
