@@ -10,8 +10,8 @@
   "author": "Nobuyuki Tokuchi",
   "license": "MIT",
   "devDependencies": {
-    "@types/knockout": "^3.4.66",
-    "knockout": "^3.5.0",
-    "typescript": "^3.6.2"
+    "@types/knockout": "^3.4.67",
+    "knockout": "^3.5.1",
+    "typescript": "^3.9.5"
   }
 }

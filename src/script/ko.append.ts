@@ -39,7 +39,7 @@
 
     ko.components.register("input-file", {
         viewModel: {
-            createViewModel: (params, componentInfo) => {
+            createViewModel: (params: any, componentInfo: any) => {
                 const base = componentInfo.element;
                 
                 const input = document.createElement("input");
